@@ -4,8 +4,11 @@
   <meta charset="UTF-8" />
   <title>Losowanie osób</title>
   <style>
+    /* Brokatowe różowe tło */
     body {
-      background: #0f0f14;
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff1493);
+      background-size: 400% 400%;
+      animation: shimmer 10s ease infinite;
       color: white;
       font-family: Arial, sans-serif;
       display: flex;
@@ -16,23 +19,32 @@
       margin: 0;
     }
 
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     h1 {
       margin-bottom: 20px;
     }
 
+    /* Czarny przycisk z białym napisem */
     button {
       padding: 15px 30px;
       font-size: 18px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      background: #ff4d6d;
+      background: black;
       color: white;
       margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      transition: 0.3s;
     }
 
     button:hover {
-      background: #ff1f4b;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
     }
 
     .card {
@@ -91,15 +103,7 @@
       { name: "WLADYSLAW", img: "wladyslaw.JPG" },
       { name: "KARMEL", img: "karmel.JPG" },
       { name: "BARTEK SUNDAY", img: "sunday.jpg" },
-      { name: "RĘBISZ", img: "rebisz.JPG" },
-      { name: "OSOBA 26", img: "osoba26.jpg" },
-      { name: "OSOBA 27", img: "osoba27.jpg" },
-      { name: "OSOBA 28", img: "osoba28.jpg" },
-      { name: "OSOBA 29", img: "osoba29.jpg" },
-      { name: "OSOBA 30", img: "osoba30.jpg" },
-      { name: "OSOBA 31", img: "osoba31.jpg" },
-      { name: "OSOBA 32", img: "osoba32.jpg" },
-      { name: "OSOBA 33", img: "osoba33.jpg" }
+      { name: "RĘBISZ", img: "rebisz.JPG" }
     ];
 
     function losuj() {
