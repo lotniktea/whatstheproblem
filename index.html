@@ -1,182 +1,185 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WYROCZNIA DELFICKA</title>
+  <meta charset="UTF-8">
+  <title>POKER WYROCZNIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #1b5e20, #0d3b12);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #89CFF0;
-      gap: 15px;
+      color: white;
+      font-family: Arial, sans-serif;
     }
 
     h1 {
-      font-size: 48px;
-      color: white;
-      margin: 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      font-family: 'Mea Culpa', cursive;
+      font-size: 64px;
+      margin-bottom: 5px;
+      letter-spacing: 2px;
     }
 
     h2 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 28px;
-      color: white;
-      margin-bottom: 30px;
+      font-size: 18px;
       font-style: italic;
+      margin-bottom: 30px;
+      opacity: 0.8;
     }
 
-    button {
-      padding: 15px 40px;
-      font-size: 20px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background-color: black;
-      color: white;
+    .table {
+      width: 90%;
+      max-width: 1200px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2e7d32, #1b5e20);
+      border: 12px solid #3e2723;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
     }
 
     .card {
-      display: none;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-
-    .card-inner {
-      width: 260px;
-      height: 340px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
-    }
-
-    .card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .card-front,
-    .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 20px;
-      backface-visibility: hidden;
+      width: 140px;
+      height: 200px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 15px;
-      box-sizing: border-box;
+      overflow: hidden;
     }
 
-    .card-front {
-      background: white;
-    }
-
-    .card-front img {
-      width: 230px;
-      height: 230px;
+    .card img {
+      width: 100%;
+      height: 150px;
       object-fit: cover;
-      border-radius: 15px;
     }
 
-    .name {
-      margin-top: 10px;
-      font-size: 22px;
+    .card .name {
+      font-size: 14px;
       font-weight: bold;
       color: black;
+      text-align: center;
+      padding: 6px;
     }
 
-    .card-back {
-      background: black;
-      color: white;
-      transform: rotateY(180deg);
-      font-family: 'Dancing Script', cursive;
-      font-size: 22px;
-      text-align: center;
+    .deck {
+      position: absolute;
+      right: 40px;
+      bottom: 40px;
+      width: 120px;
+      height: 180px;
+      background: repeating-linear-gradient(
+        45deg,
+        #111,
+        #111 10px,
+        #222 10px,
+        #222 20px
+      );
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .deck:hover {
+      transform: translateY(-4px);
+    }
+
+    .deck span {
+      transform: rotate(-90deg);
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
 
-  <h1>WYROCZNIA DELFICKA</h1>
-  <h2>All the boys I've loved before</h2>
+  <h1>POKER WYROCZNIA</h1>
+  <h2>kliknij talię, żeby rozdać karty</h2>
 
-  <button id="losujBtn">LOSUJ</button>
+  <div class="table">
+    <div class="cards" id="cards">
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </div>
 
-  <div class="card" id="wynik">
-    <div class="card-inner">
-      <div class="card-front">
-        <img id="zdjecie" src="" alt="">
-        <div class="name" id="nazwa"></div>
-      </div>
-      <div class="card-back">
-        <div id="znaczenie"></div>
-      </div>
+    <div class="deck" id="deck">
+      <span>DEAL</span>
     </div>
   </div>
 
   <script>
     const osoby = [
-      { name: "SZYMEK", img: "szymek.JPG", meaning: "niesmialosc, pech, choroba, woda" },
-      { name: "RACIN", img: "racin.JPG", meaning: "dostatek, powodzenie, sport, milosc" },
-      { name: "ŻUK", img: "zuk.jpg", meaning: "madrosc, optymizm, szczescie" },
-      { name: "BARTEK SZCZEPAN", img: "szczepan.jpg", meaning: "zakochanie, spokoj ducha, jezus" },
-      { name: "BORZYM", img: "borzym.jpg", meaning: "pech, brzydota, chaos" },
-      { name: "KSEJ", img: "ksej.jpg", meaning: "ambicja, sport, pulapka, milosc" },
-      { name: "WOJTINI", img: "wojtini.jpg", meaning: "beztroska, narkotyki, radosc, nieszzczescie" },
-      { name: "SZYMON PEDAŁ KURWA", img: "spk.jpg", meaning: "nowa droga, strach, taniec" },
-      { name: "MARCEL CHWAST", img: "cwel.jpg", meaning: "narcyzm, high life" },
-      { name: "KULCZYK", img: "kulczyk.JPG", meaning: "strach, pech, brak poczucia wlasnej wartosci" },
-      { name: "OLAF BOREK", img: "borek.JPG", meaning: "iluzja, bitwa, zakochanie" },
-      { name: "PABLO", img: "pablo.JPG", meaning: "sabotaz, pech, klotnia" },
-      { name: "KSAWIER", img: "ksawier.JPG", meaning: "plotki, konflikt, nienawisc" },
-      { name: "ANITA", img: "IMG_0842.jpeg", meaning: "obluda, zdrada, plotki" },
-      { name: "NIKOLA", img: "IMG_0841.jpeg", meaning: "chaos, impreza, wiedza" },
-      { name: "OLEK DRAŻA", img: "olek.JPG", meaning: "tajemnica, nonszalancja, spokoj" },
-      { name: "KORNEL", img: "IMG_1819.jpeg", meaning: "kpina, wiedza, pogarda" },
-      { name: "MAGDA", img: "magda.jpg", meaning: "zazdrosc, plotki, milosc" },
-      { name: "LIWKA", img: "liwia.JPG", meaning: "nieufnosc, spisek, partner in crime motive" },
-      { name: "KINGA", img: "kinga.JPG", meaning: "brud, zaalugiwanie lepiej" },
-      { name: "FIFI", img: "fifi.JPG", meaning: "komedia, absurd goni abusrd" },
-      { name: "WLADYSLAW", img: "wladyslaw.JPG", meaning: "wojna, sukces, narcyzm" },
-      { name: "KARMEL", img: "karmel.JPG", meaning: "pogarda, trauma, skrytosc" },
-      { name: "BARTEK SUNDAY", img: "sunday.jpg", meaning: "szczescie, spokoj, dobrostan" },
-      { name: "RĘBISZ", img: "rebisz.JPG", meaning: "zal, pragnienie, skrytosc" },
-      { name: "RAFAŁ", img: "rafal.jpg", meaning: "narcyzm, chaos, bogsctwo" },
-      { name: "CHMIELU", img: "kuba.jpg", meaning: "glupota, zaniedbanie" },
-      { name: "ALICJA", img: "IMG_1822.jpeg", meaning: "zdrada, klamstwo, deterioracja" },
-      { name: "HANIA LIS", img: "IMG_0845.jpeg", meaning: "nadzieja, milosc, szczescie" },
-      { name: "TRZASKOWSKA", img: "IMG_1847.jpeg", meaning: "bogactwo, narcyzm, wycieczka" },
-      { name: "WIDANSKI", img: "IMG_1868.jpeg", meaning: "lmao"}
+      { name: "SZYMEK", img: "szymek.JPG" },
+      { name: "RACIN", img: "racin.JPG" },
+      { name: "ŻUK", img: "zuk.jpg" },
+      { name: "BARTEK SZCZEPAN", img: "szczepan.jpg" },
+      { name: "BORZYM", img: "borzym.jpg" },
+      { name: "KSEJ", img: "ksej.jpg" },
+      { name: "WOJTINI", img: "wojtini.jpg" },
+      { name: "SZYMON PEDAŁ KURWA", img: "spk.jpg" },
+      { name: "MARCEL CHWAST", img: "cwel.jpg" },
+      { name: "KULCZYK", img: "kulczyk.JPG" },
+      { name: "OLAF BOREK", img: "borek.JPG" },
+      { name: "PABLO", img: "pablo.JPG" },
+      { name: "KSAWIER", img: "ksawier.JPG" },
+      { name: "ANITA", img: "IMG_0842.jpeg" },
+      { name: "NIKOLA", img: "IMG_0841.jpeg" },
+      { name: "OLEK DRAŻA", img: "olek.JPG" },
+      { name: "KORNEL", img: "IMG_1819.jpeg" },
+      { name: "MAGDA", img: "magda.jpg" },
+      { name: "LIWKA", img: "liwia.JPG" },
+      { name: "KINGA", img: "kinga.JPG" },
+      { name: "FIFI", img: "fifi.JPG" },
+      { name: "WLADYSLAW", img: "wladyslaw.JPG" },
+      { name: "KARMEL", img: "karmel.JPG" },
+      { name: "BARTEK SUNDAY", img: "sunday.jpg" },
+      { name: "RĘBISZ", img: "rebisz.JPG" },
+      { name: "RAFAŁ", img: "rafal.jpg" },
+      { name: "CHMIELU", img: "kuba.jpg" },
+      { name: "ALICJA", img: "IMG_1822.jpeg" },
+      { name: "HANIA LIS", img: "IMG_0845.jpeg" },
+      { name: "TRZASKOWSKA", img: "IMG_1847.jpeg" },
+      { name: "WIDANSKI", img: "IMG_1868.jpeg" }
     ];
 
-    const btn = document.getElementById("losujBtn");
-    const card = document.getElementById("wynik");
-    const img = document.getElementById("zdjecie");
-    const nameBox = document.getElementById("nazwa");
-    const meaningBox = document.getElementById("znaczenie");
+    const deck = document.getElementById("deck");
+    const cardSlots = document.querySelectorAll(".card");
 
-    btn.addEventListener("click", () => {
-      const los = osoby[Math.floor(Math.random() * osoby.length)];
-      img.src = los.img;
-      nameBox.textContent = los.name;
-      meaningBox.textContent = los.meaning;
-      card.style.display = "block";
-      card.classList.remove("flipped");
-    });
+    deck.addEventListener("click", () => {
+      const shuffled = [...osoby].sort(() => Math.random() - 0.5);
+      const hand = shuffled.slice(0, 5);
 
-    card.addEventListener("click", () => {
-      card.classList.toggle("flipped");
+      cardSlots.forEach((slot, i) => {
+        slot.innerHTML = `
+          <img src="${hand[i].img}">
+          <div class="name">${hand[i].name}</div>
+        `;
+      });
     });
   </script>
 
